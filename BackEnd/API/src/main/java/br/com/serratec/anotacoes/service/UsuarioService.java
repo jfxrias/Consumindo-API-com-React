@@ -28,19 +28,20 @@ public class UsuarioService {
     private JwtUtil jwtUtil;
 
     //Cadastro
-    public UsuarioResponseDTO cadastrar(UsuarioCadastroDTO dto) {
-        if (usuarioRepository.existsByLogin(dto.getLogin())) {
-            throw new RuntimeException("Login já cadastrado: " + dto.getLogin());
-        }
-
-        Usuario usuario = new Usuario();
-        usuario.setLogin(dto.getLogin());
-        // Criptografa a senha antes de salvar
-        usuario.setSenhaUsuario(passwordEncoder.encode(dto.getSenha()));
-
-        Usuario salvo = usuarioRepository.save(usuario);
-        return new UsuarioResponseDTO(salvo.getIdUsuario(), salvo.getLogin());
+  public UsuarioResponseDTO cadastrar(UsuarioCadastroDTO dto) {
+    if (usuarioRepository.existsByLogin(dto.getLogin())) {
+        throw new RuntimeException("Login já cadastrado: " + dto.getLogin());
     }
+
+    Usuario usuario = new Usuario();
+    usuario.setLogin(dto.getLogin());
+    usuario.setSenhaUsuario(passwordEncoder.encode(dto.getSenha()));
+    usuario.setRole(dto.getRole()); // ESSENCIAL: copiar o role do DTO
+
+    Usuario salvo = usuarioRepository.save(usuario);
+    return new UsuarioResponseDTO(salvo.getIdUsuario(), salvo.getLogin());
+}
+
 
     //Login
     public LoginResponseDTO login(LoginRequestDTO dto) {
