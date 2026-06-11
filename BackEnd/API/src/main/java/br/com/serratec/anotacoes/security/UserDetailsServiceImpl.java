@@ -17,11 +17,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + login));
 
-        // Retorna o UserDetails com login, senha e roles USER e ADMIN
         return User.builder()
                 .username(usuario.getLogin())
                 .password(usuario.getSenhaUsuario())
-                .roles("USER", "ADMIN") // adiciona as duas roles
+                .roles(usuario.getRole()) 
                 .build();
     }
+
 }

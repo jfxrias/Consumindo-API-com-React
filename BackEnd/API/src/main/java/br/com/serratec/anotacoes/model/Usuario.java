@@ -2,7 +2,6 @@ package br.com.serratec.anotacoes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -20,15 +19,19 @@ public class Usuario {
     @Column(name = "senha_usuario", nullable = false)
     private String senhaUsuario;
 
-    // ── Construtores
+    @Column(name = "role", nullable = false, length = 20)
+    private String role; 
+
+  
     public Usuario() {}
 
-    public Usuario(String login, String senhaUsuario) {
+    public Usuario(String login, String senhaUsuario, String role) {
         this.login = login;
         this.senhaUsuario = senhaUsuario;
+        this.role = role;
     }
 
-    // ── Getters e Setters 
+  
     public Long getIdUsuario() { return idUsuario; }
     public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
 
@@ -37,4 +40,7 @@ public class Usuario {
 
     public String getSenhaUsuario() { return senhaUsuario; }
     public void setSenhaUsuario(String senhaUsuario) { this.senhaUsuario = senhaUsuario; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
