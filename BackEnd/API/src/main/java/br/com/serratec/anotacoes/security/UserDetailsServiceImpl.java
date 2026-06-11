@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -17,14 +15,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByLogin(login)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "Usuário não encontrado: " + login));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + login));
 
-        // Retorna o UserDetails com login, senha e sem roles extras
-        return new org.springframework.security.core.userdetails.User(
-                usuario.getLogin(),
-                usuario.getSenhaUsuario(),
-                new ArrayList<>()
-        );
+        // Retorna o UserDetails com login, senha e roles USER e ADMIN
+        return User.builder()
+                .username(usuario.getLogin())
+                .password(usuario.getSenhaUsuario())
+                .roles("USER", "ADMIN") // adiciona as duas roles
+                .build();
     }
 }
