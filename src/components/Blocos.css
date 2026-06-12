@@ -1,0 +1,146 @@
+/* Container principal */
+.container {
+  padding: 40px;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+  font-family: sans-serif;
+  position: relative;
+}
+
+/* Botão Nova Nota */
+.btn-nova-nota {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-mural {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Modal fundo escuro */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* div modal */
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  height: 120px;
+  resize: none;
+  font-family: inherit;
+}
+
+.contador {
+  text-align: right;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.contador.limite {
+  color: red;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-cancelar {
+  padding: 10px;
+  background: #ccc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-criar {
+  padding: 10px 20px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Grid de Post-its */
+.mural-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+/* Post-it individual */
+.post-it {
+  width: 200px;
+  min-height: 200px;
+  padding: 25px;
+  background-color: #ffff88;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.btn-excluir {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  color: rgba(0,0,0,0.3);
+}
+
+/* Aqui eu realmente não sei explicar, mas funciona */
+.post-it p {
+  font-size: 1rem;
+  margin: 0;
+  text-align: center;
+  
+  /* SOLUÇÃO PARA O TEXTO NÃO VAZAR: */
+  overflow-wrap: break-word;  /* Quebra a palavra se for muito grande */
+  word-wrap: break-word;      /* Suporte para navegadores antigos */
+  word-break: break-all;      /* Força a quebra em qualquer caractere se necessário */
+  hyphens: auto;              /* Adiciona hífens se o navegador suportar */
+  
+  max-width: 100%;            /* Garante que não passe da largura do pai */
+}
