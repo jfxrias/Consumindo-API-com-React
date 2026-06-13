@@ -8,11 +8,15 @@ export default function MinhasNotas() {
   const [cor, setCor] = useState("#ffff88");
   const [editing, setEditing] = useState(null);
 
-  const handleAdd = () => {
-    if (!texto.trim()) return;
-    addNote({ texto, cor });
-    setTexto("");
-  };
+const handleAdd = () => {
+  if (!texto.trim()) {
+    alert("O campo de texto não pode estar vazio!");
+    return;
+  }
+  addNote({ texto, cor });
+  setTexto("");
+};
+
 
   return (
     <div className={styles.container}>
