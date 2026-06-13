@@ -18,26 +18,52 @@ public class Bloco {
     @Column(name = "texto", nullable = false, length = 100)
     private String texto;
 
-    // Relacionamento: muitos blocos pertencem a um usuário
+  
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    // ── Construtores
-    public Bloco() {}
+    private String cor;
+
+   
+    public Bloco() {
+    }
 
     public Bloco(String texto, Usuario usuario) {
         this.texto = texto;
         this.usuario = usuario;
     }
 
-    // ── Getters e Setters
-    public Long getIdBloco() { return idBloco; }
-    public void setIdBloco(Long idBloco) { this.idBloco = idBloco; }
+    
+    public Long getIdBloco() {
+        return idBloco;
+    }
 
-    public String getTexto() { return texto; }
-    public void setTexto(String texto) { this.texto = texto; }
+    public void setIdBloco(Long idBloco) {
+        this.idBloco = idBloco;
+    }
 
-    public Usuario getUsuario() { return usuario; }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 }

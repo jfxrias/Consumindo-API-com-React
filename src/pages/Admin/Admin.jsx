@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// OBS: Corrigir com a  URL base correta da API que o João rodou no backend
-const API_URL = 'http://localhost:5000/categories'; 
+
+const API_URL = 'http://localhost:8080/categories'; 
 
 export default function Admin() {
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState('');
   
   const [categoryName, setCategoryName] = useState('');
-  const [categoryColor, setCategoryColor] = useState('#fde047'); // Amarelo padrão do Keep
+  const [categoryColor, setCategoryColor] = useState('#fde047'); 
   const [editingId, setEditingId] = useState(null);
   
   const [error, setError] = useState('');

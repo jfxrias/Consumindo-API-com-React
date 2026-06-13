@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(false);
@@ -15,7 +15,7 @@ export function ThemeProvider({ children }) {
     } else {
       document.body.classList.remove("dark-mode");
     }
-  }, [darkMode]); // Toda vez que o darkMode mudar, esse código roda
+  }, [darkMode]);
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
@@ -24,6 +24,7 @@ export function ThemeProvider({ children }) {
   );
 }
 
+// Hook personalizado
 export function useTheme() {
   return useContext(ThemeContext);
 }

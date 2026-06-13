@@ -1,6 +1,6 @@
 package br.com.serratec.anotacoes.controller;
 
-import br.com.serratec.anotacoes.dto.BlocoInserirDTO;
+import br.com.serratec.anotacoes.dto.BlocoRequestDTO;
 import br.com.serratec.anotacoes.dto.BlocoResponseDTO;
 import br.com.serratec.anotacoes.service.BlocoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,26 +24,24 @@ public class BlocoController {
     @Autowired
     private BlocoService blocoService;
 
-    // ── GET /blocos
-    @GetMapping
+    // ── GET /blocos/listar
+    @GetMapping("/listar")
     @Operation(summary = "Lista todos os blocos do usuário logado")
     public ResponseEntity<List<BlocoResponseDTO>> listar() {
         return ResponseEntity.ok(blocoService.listar());
     }
 
-    // ── GET /blocos/{id}
-    @GetMapping("/{id}")
+    // ── GET /blocos/listar/{id}
+    @GetMapping("/listar/{id}")
     @Operation(summary = "Busca um bloco por ID")
     public ResponseEntity<BlocoResponseDTO> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(blocoService.buscarPorId(id));
     }
 
-    // ── POST /blocos
-    @PostMapping
+    // ── POST /blocos/adicionar
+    @PostMapping("/adicionar")
     @Operation(summary = "Cria um novo bloco de anotação")
-    public ResponseEntity<BlocoResponseDTO> criar(
-            @Valid @RequestBody BlocoInserirDTO dto) {
-
+    public ResponseEntity<BlocoResponseDTO> criar(@Valid @RequestBody BlocoRequestDTO dto) {
         BlocoResponseDTO salvo = blocoService.criar(dto);
 
         URI uri = ServletUriComponentsBuilder
@@ -55,18 +53,17 @@ public class BlocoController {
         return ResponseEntity.created(uri).body(salvo);
     }
 
-    // ── PUT /blocos/{id}
-    @PutMapping("/{id}")
+    // ── PUT /blocos/atualizar/{id}
+    @PutMapping("/atualizar/{id}")
     @Operation(summary = "Atualiza um bloco existente")
     public ResponseEntity<BlocoResponseDTO> atualizar(
             @PathVariable Long id,
-            @Valid @RequestBody BlocoInserirDTO dto) {
-
+            @Valid @RequestBody BlocoRequestDTO dto) {
         return ResponseEntity.ok(blocoService.atualizar(id, dto));
     }
 
-    // ── DELETE /blocos/{id}
-    @DeleteMapping("/{id}")
+    // ── DELETE /blocos/remover/{id}
+    @DeleteMapping("/remover/{id}")
     @Operation(summary = "Deleta um bloco")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         blocoService.deletar(id);

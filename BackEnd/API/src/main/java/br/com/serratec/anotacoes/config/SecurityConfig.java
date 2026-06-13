@@ -94,7 +94,7 @@ public class SecurityConfig {
 
         // Permite requisições do React (ajuste a porta se necessário)
         config.setAllowedOrigins(List.of(
-            "http://localhost:3000",   // React dev server
+            "http://localhost:5173",   // React dev server
             "http://localhost:5173"    // Vite dev server
         ));
 
