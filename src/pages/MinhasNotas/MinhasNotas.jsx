@@ -16,7 +16,7 @@ export default function MinhasNotas() {
 
   return (
     <div className={styles.container}>
-      <h1>Minhas Notas</h1>
+      <h1>Mural</h1>
 
       <div className={styles.form}>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} />
