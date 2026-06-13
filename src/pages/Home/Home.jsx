@@ -1,9 +1,35 @@
 import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import NoteCard from "../components/NoteCard";
-import FilterBar from "../components/FilterBar";
-import { NotesContext } from "../context/NotesContext";
-import { ThemeContext } from "../context/ThemeContext";
+import NoteCard from "../../components/NoteCard.jsx";
+import FilterBar from "../../components/FilterBar.jsx";
+import { NotesContext } from "../../Context/NotesContext.jsx";
+import { ThemeContext } from "../../Context/ThemeContext.jsx";
+import styles from "./Home.module.css";
+
+function filterNotes(notes, searchTerm, selectedCategory) {
+  return notes.filter((note) => {
+    const matchesSearch =
+      !searchTerm ||
+      note.texto?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      !selectedCategory || note.categoria === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+}
+
+function getCategories(notes) {
+  const cats = notes.map((n) => n.categoria).filter(Boolean);
+  return [...new Set(cats)].sort();
+}
+
+function getTheme(darkMode) {
+  return {
+    bg: darkMode ? "#1a1a2e" : "#f8f8f8",
+    text: darkMode ? "#e0e0e0" : "#333333",
+    subtext: "#888",
+    border: darkMode ? "#2a2a4a" : "#e0e0e0",
+  };
+}
 
 export default function Home() {
   const { notes } = useContext(NotesContext);
@@ -20,65 +46,24 @@ export default function Home() {
     };
   }, [notes.length]);
 
-  const categories = useMemo(() => {
-    const cats = notes.map((n) => n.category).filter(Boolean);
-    return [...new Set(cats)].sort();
-  }, [notes]);
+  const categories = useMemo(() => getCategories(notes), [notes]);
+  const filteredNotes = useMemo(
+    () => filterNotes(notes, searchTerm, selectedCategory),
+    [notes, searchTerm, selectedCategory]
+  );
 
-  const filteredNotes = useMemo(() => {
-    return notes.filter((note) => {
-      const matchesSearch =
-        !searchTerm ||
-        note.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.content?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory =
-        !selectedCategory || note.category === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [notes, searchTerm, selectedCategory]);
-
-  const theme = {
-    bg: darkMode ? "#1a1a2e" : "#f8f8f8",
-    surface: darkMode ? "#16213e" : "#ffffff",
-    text: darkMode ? "#e0e0e0" : "#333333",
-    subtext: darkMode ? "#888" : "#888",
-    border: darkMode ? "#2a2a4a" : "#e0e0e0",
-  };
+  const theme = useMemo(() => getTheme(darkMode), [darkMode]);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: theme.bg,
-        color: theme.text,
-        transition: "background-color 0.3s, color 0.3s",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "24px 20px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "16px",
-            flexWrap: "wrap",
-            gap: "12px",
-          }}
-        >
-          <h1 style={{ fontSize: "22px", fontWeight: 700, margin: 0 }}>
-            Minhas Notas
-          </h1>
-          <span style={{ fontSize: "13px", color: theme.subtext }}>
-            {filteredNotes.length}{" "}
-            {filteredNotes.length === 1 ? "nota" : "notas"}
+    <div className={styles.container} style={{ backgroundColor: theme.bg, color: theme.text }}>
+      <div className={styles.inner}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Minhas Notas</h1>
+          <span className={styles.count} style={{ color: theme.subtext }}>
+            {filteredNotes.length} {filteredNotes.length === 1 ? "nota" : "notas"}
           </span>
         </div>
+
         <FilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -87,29 +72,29 @@ export default function Home() {
           categories={categories}
           darkMode={darkMode}
         />
+
         {filteredNotes.length === 0 ? (
           <EmptyState
             hasFilters={!!(searchTerm || selectedCategory)}
-            darkMode={darkMode}
+            theme={theme}
             onClear={() => {
               setSearchTerm("");
               setSelectedCategory("");
             }}
           />
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-              gap: "16px",
-              marginTop: "16px",
-            }}
-          >
+          <div className={styles.grid}>
             {filteredNotes.map((note) => (
               <NoteCard
-                key={note.id}
-                note={note}
-                onClick={() => navigate(`/note/${note.id}`)}
+                key={note.idBloco}
+                note={{
+                  id: note.idBloco,
+                  title: note.texto,
+                  content: note.texto,
+                  category: note.categoria,
+                  color: note.cor,
+                }}
+                onClick={() => navigate(`/note/${note.idBloco}`)}
               />
             ))}
           </div>
@@ -119,49 +104,17 @@ export default function Home() {
   );
 }
 
-function EmptyState({ hasFilters, darkMode, onClear }) {
-  const color = darkMode ? "#555" : "#ccc";
-  const textColor = darkMode ? "#777" : "#bbb";
-
+function EmptyState({ hasFilters, theme, onClear }) {
   return (
-    <div style={{ textAlign: "center", padding: "60px 20px" }}>
-      <svg
-        width="56"
-        height="56"
-        fill="none"
-        stroke={color}
-        strokeWidth={1.5}
-        viewBox="0 0 24 24"
-        style={{ marginBottom: "16px" }}
-        aria-hidden="true"
-      >
-        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-        <rect x="9" y="3" width="6" height="4" rx="1" />
-        <line x1="9" y1="12" x2="15" y2="12" />
-        <line x1="9" y1="16" x2="12" y2="16" />
-      </svg>
-      <p style={{ fontSize: "16px", fontWeight: 600, color: textColor, margin: "0 0 8px" }}>
+    <div className={styles.empty}>
+      <p className={styles.emptyTitle} style={{ color: theme.subtext }}>
         {hasFilters ? "Nenhuma nota encontrada" : "Nenhuma nota ainda"}
       </p>
-      <p style={{ fontSize: "13px", color: textColor, margin: "0 0 16px" }}>
-        {hasFilters
-          ? "Tente outros termos ou categorias."
-          : "Crie sua primeira nota para começar."}
+      <p className={styles.emptyText} style={{ color: theme.subtext }}>
+        {hasFilters ? "Tente outros termos ou categorias." : "Crie sua primeira nota para começar."}
       </p>
       {hasFilters && (
-        <button
-          onClick={onClear}
-          style={{
-            padding: "8px 20px",
-            borderRadius: "24px",
-            border: "none",
-            backgroundColor: "#f5a623",
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: "13px",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={onClear} className={styles.clearButton}>
           Limpar filtros
         </button>
       )}

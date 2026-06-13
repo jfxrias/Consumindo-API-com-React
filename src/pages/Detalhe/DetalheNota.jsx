@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NotesContext } from "../context/NotesContext";
-import { ThemeContext } from "../context/ThemeContext";
-import { getNoteTextColor } from "../utils/noteColors";
+import { ThemeContext } from "../../context/ThemeContext";
+import { getNoteTextColor } from "../../utils/noteColors";
 
 function formatDate(dateString) {
   if (!dateString) return "";

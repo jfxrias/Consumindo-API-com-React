@@ -1,13 +1,17 @@
-import axios from 'axios';
+
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080'
-} );
+  baseURL: "http://localhost:8080", 
+});
 
-// Seu token estático fornecido
-const TOKEN_ESTATICO = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnYWJyaWVsIiwiaWF0IjoxNzgxMjg5OTY5LCJleHAiOjE3ODEzNzYzNjl9.lwYSVyMm8k0HFf6_v1BxChN4Y7PmMyjd47onjVboRzk";
 
-// Configuração para enviar o token em todas as requisições
-api.defaults.headers.common['Authorization'] = `Bearer ${TOKEN_ESTATICO}`;
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token"); 
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default api;

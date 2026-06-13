@@ -1,24 +1,23 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Login/Login.jsx";
-import Home from "../pages/Home";
-import MyNotes from "../pages/MinhasNotas";
-import NoteDetail from "../pages/DetalheNota";
-import Admin from "../pages/Admin";
-import PrivateRoute from "./PrivateRoute";
+import Home from "../pages/Home/Home.jsx";
+import MinhasNotas from "../pages/MinhasNotas/MinhasNotas.jsx";
+import DetalheNota from "../pages/DetalheNota/DetalheNota.jsx";
+import Admin from "../pages/Admin/Admin.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+      
         <Route path="/login" element={<Login />} />
 
         <Route path="/home" element={<Home />} />
+        <Route path="/minhasnotas" element={<MinhasNotas />} />
+        <Route path="/nota/:id" element={<DetalheNota />} />
 
-        <Route path="/mynotes" element={<MyNotes />} />
-
-        <Route path="/nota/:id" element={<NoteDetail />} />
-
+    
         <Route
           path="/admin"
           element={
@@ -28,7 +27,8 @@ export default function AppRouter() {
           }
         />
 
-        <Route path="*" element={<Navigate to="/login" />} />
+        
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

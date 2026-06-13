@@ -1,37 +1,43 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext"; 
+import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "../Context/ThemeContext";
+import styles from "./NavBar.module.css";
 
 export default function NavBar() {
   const { darkMode, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("token"); 
+    navigate("/login"); 
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <div className="container-fluid d-flex justify-content-between align-items-center">
-        
-        <Link className="navbar-brand fw-bold fs-4" to="/">
-          Bloco de Notas
-        </Link>
+    <nav className={`${styles.navbar} ${darkMode ? styles.dark : styles.light}`}>
+      <div className={styles.logo}>
+        <Link to="/home">Bloco de Notas</Link>
+      </div>
 
-        <div className="d-flex align-items-center gap-3">
-          <ul className="navbar-nav d-flex flex-row gap-3 mb-0">
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/">Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/admin">Admin</Link>
-            </li>
-          </ul>
+      <ul className={styles.navLinks}>
+        <li><Link to="/home">Home</Link></li>
+        <li><Link to="/minhasnotas">Minhas Notas</Link></li>
+        <li><Link to="/admin">Admin</Link></li>
+      </ul>
 
-          <button 
-            onClick={toggleTheme} 
-            className="btn btn-outline-warning btn-sm ms-2"
-            aria-label={darkMode ? "Mudar para modo claro" : "Mudar para modo escuro"}
-          >
-            {darkMode ? "☀️ Claro" : "🌙 Escuro"}
-          </button>
-        </div>
+      <div className={styles.navActions}>
+        <button 
+          onClick={toggleTheme} 
+          className={styles.themeButton}
+        >
+          {darkMode ? "☀️ Claro" : "🌙 Escuro"}
+        </button>
 
+        <button 
+          onClick={logout} 
+          className={styles.logoutButton}
+        >
+          Logout
+        </button>
       </div>
     </nav>
   );
