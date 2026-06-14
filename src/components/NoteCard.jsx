@@ -1,4 +1,4 @@
-import React from "react";
+
 import { getNoteTextColor } from "../utils/noteColors";
 
 export default function NoteCard({ note, onClick }) {

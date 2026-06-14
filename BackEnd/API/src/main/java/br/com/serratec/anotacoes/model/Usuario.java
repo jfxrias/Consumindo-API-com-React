@@ -2,6 +2,7 @@ package br.com.serratec.anotacoes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -20,10 +21,15 @@ public class Usuario {
     private String senhaUsuario;
 
     @Column(name = "role", nullable = false, length = 20)
-    private String role; 
+    private String role;
 
-  
-    public Usuario() {}
+
+
+    @Column(name = "idioma", length = 50)
+    private String idioma;
+
+    public Usuario() {
+    }
 
     public Usuario(String login, String senhaUsuario, String role) {
         this.login = login;
@@ -31,16 +37,44 @@ public class Usuario {
         this.role = role;
     }
 
-  
-    public Long getIdUsuario() { return idUsuario; }
-    public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
 
-    public String getLogin() { return login; }
-    public void setLogin(String login) { this.login = login; }
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public String getSenhaUsuario() { return senhaUsuario; }
-    public void setSenhaUsuario(String senhaUsuario) { this.senhaUsuario = senhaUsuario; }
+    public String getLogin() {
+        return login;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenhaUsuario() {
+        return senhaUsuario;
+    }
+
+    public void setSenhaUsuario(String senhaUsuario) {
+        this.senhaUsuario = senhaUsuario;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+
+    public String getIdioma() {
+        return idioma;
+    }
+
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
+    }
 }

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { NotesContext } from "../../Context/NotesContext.jsx";
+import { useTranslation } from "react-i18next";
 import styles from "./MinhasNotas.module.css";
 
 export default function MinhasNotas() {
@@ -7,20 +8,20 @@ export default function MinhasNotas() {
   const [texto, setTexto] = useState("");
   const [cor, setCor] = useState("#ffff88");
   const [editing, setEditing] = useState(null);
+  const { t } = useTranslation();
 
-const handleAdd = () => {
-  if (!texto.trim()) {
-    alert("O campo de texto não pode estar vazio!");
-    return;
-  }
-  addNote({ texto, cor });
-  setTexto("");
-};
-
+  const handleAdd = () => {
+    if (!texto.trim()) {
+      alert(t("emptyTextAlert"));
+      return;
+    }
+    addNote({ texto, cor });
+    setTexto("");
+  };
 
   return (
     <div className={styles.container}>
-      <h1>Mural</h1>
+      <h1>{t("mural")}</h1>
 
       <div className={styles.form}>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} />
@@ -30,7 +31,7 @@ const handleAdd = () => {
           value={cor}
           onChange={(e) => setCor(e.target.value)}
         />
-        <button onClick={handleAdd}>Adicionar Nota</button>
+        <button onClick={handleAdd}>{t("addNote")}</button>
       </div>
 
       {editing && (
@@ -52,9 +53,9 @@ const handleAdd = () => {
                 setEditing(null);
               }}
             >
-              Salvar
+              {t("save")}
             </button>
-            <button onClick={() => setEditing(null)}>Cancelar</button>
+            <button onClick={() => setEditing(null)}>{t("cancel")}</button>
           </div>
         </div>
       )}
@@ -68,8 +69,8 @@ const handleAdd = () => {
           >
             <p>{note.texto}</p>
             <div className={styles.actions}>
-              <button onClick={() => deleteNote(note.idBloco)}>Excluir</button>
-              <button onClick={() => setEditing(note)}>Editar</button>
+              <button onClick={() => deleteNote(note.idBloco)}>{t("delete")}</button>
+              <button onClick={() => setEditing(note)}>{t("edit")}</button>
             </div>
           </div>
         ))}
