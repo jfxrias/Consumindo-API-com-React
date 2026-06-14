@@ -4,15 +4,16 @@ import Home from "./pages/Home/Home";
 import { AuthProvider } from "./Context/AuthContext";
 import { ThemeProvider } from "./Context/ThemeContext";
 import { NotesProvider } from "./Context/NotesContext";
-import Admin from "./pages/Admin/Admin";
+import Configuracoes from "./pages/Configuracoes/Configuracoes.jsx";
 import "./App.css";
 import NavBar from "./components/NavBar.jsx";
 import MinhasNotas from "./pages/MinhasNotas/MinhasNotas.jsx";
+import "./Traducao/i18nIngles.jsx";
+import DetalheNota from "./pages/Detalhe/DetalheNota.jsx"
 
 function Layout({ children }) {
   const location = useLocation();
   const hideNav = location.pathname === "/" || location.pathname === "/login";
-
   return (
     <>
       {!hideNav && <NavBar />}
@@ -33,7 +34,8 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/minhasnotas" element={<MinhasNotas />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/configuracoes" element={<Configuracoes />} />
+                 <Route path="/note/:id" element={<DetalheNota />} />  
               </Routes>
             </Layout>
           </BrowserRouter>

@@ -13,15 +13,20 @@ export function AuthProvider({ children }) {
         senha,
       });
 
-  
+      // salva no localStorage para usar depois nos endpoints de configurações
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.idUsuario);
       localStorage.setItem("login", response.data.login);
 
+      // atualiza estado global do usuário
       setUser({
         id: response.data.idUsuario,
         login: response.data.login,
         token: response.data.token,
       });
+
+      // retorna os dados para quem chamou
+      return response.data;
     } catch (err) {
       console.error("Erro no login", err);
       throw err;
@@ -30,6 +35,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     localStorage.removeItem("login");
     setUser(null);
   };

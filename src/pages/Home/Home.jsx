@@ -4,6 +4,7 @@ import NoteCard from "../../components/NoteCard.jsx";
 import FilterBar from "../../components/FilterBar.jsx";
 import { NotesContext } from "../../Context/NotesContext.jsx";
 import { ThemeContext } from "../../Context/ThemeContext.jsx";
+import { useTranslation } from "react-i18next";
 import styles from "./Home.module.css";
 
 function filterNotes(notes, searchTerm, selectedCategory) {
@@ -35,16 +36,17 @@ export default function Home() {
   const { notes } = useContext(NotesContext);
   const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    document.title = `Bloco de Notas (${notes.length} nota${notes.length !== 1 ? "s" : ""})`;
+    document.title = `Bloco de Notas (${notes.length} ${notes.length === 1 ? t("notesCountSingular") : t("notesCountPlural")})`;
     return () => {
       document.title = "Bloco de Notas";
     };
-  }, [notes.length]);
+  }, [notes.length, t]);
 
   const categories = useMemo(() => getCategories(notes), [notes]);
   const filteredNotes = useMemo(
@@ -58,9 +60,9 @@ export default function Home() {
     <div className={styles.container} style={{ backgroundColor: theme.bg, color: theme.text }}>
       <div className={styles.inner}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Minhas Notas</h1>
+          <h1 className={styles.title}>{t("homeTitle")}</h1>
           <span className={styles.count} style={{ color: theme.subtext }}>
-            {filteredNotes.length} {filteredNotes.length === 1 ? "nota" : "notas"}
+            {filteredNotes.length} {filteredNotes.length === 1 ? t("notesCountSingular") : t("notesCountPlural")}
           </span>
         </div>
 
@@ -105,17 +107,18 @@ export default function Home() {
 }
 
 function EmptyState({ hasFilters, theme, onClear }) {
+  const { t } = useTranslation();
   return (
     <div className={styles.empty}>
       <p className={styles.emptyTitle} style={{ color: theme.subtext }}>
-        {hasFilters ? "Nenhuma nota encontrada" : "Nenhuma nota ainda"}
+        {hasFilters ? t("noNotesFound") : t("noNotesYet")}
       </p>
       <p className={styles.emptyText} style={{ color: theme.subtext }}>
-        {hasFilters ? "Tente outros termos ou categorias." : "Crie sua primeira nota para começar."}
+        {hasFilters ? t("tryOtherFilters") : t("createFirstNote")}
       </p>
       {hasFilters && (
         <button onClick={onClear} className={styles.clearButton}>
-          Limpar filtros
+          {t("clearFilters")}
         </button>
       )}
     </div>

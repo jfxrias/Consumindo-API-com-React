@@ -2,10 +2,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../Context/ThemeContext";
 import styles from "./NavBar.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function NavBar() {
   const { darkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation(); 
 
   const logout = () => {
     localStorage.removeItem("token"); 
@@ -19,9 +21,9 @@ export default function NavBar() {
       </div>
 
       <ul className={styles.navLinks}>
-        <li><Link to="/home">Home</Link></li>
-        <li><Link to="/minhasnotas">Minhas Notas</Link></li>
-        <li><Link to="/admin">Admin</Link></li>
+        <li><Link to="/home">{t("home")}</Link></li>
+        <li><Link to="/minhasnotas">{t("myNotes")}</Link></li>
+        <li><Link to="/configuracoes">{t("settings")}</Link></li>
       </ul>
 
       <div className={styles.navActions}>
@@ -29,14 +31,14 @@ export default function NavBar() {
           onClick={toggleTheme} 
           className={styles.themeButton}
         >
-          {darkMode ? "☀️ Claro" : "🌙 Escuro"}
+          {darkMode ? "☀️ Claro" : `🌙 ${t("darkMode")}`}
         </button>
 
         <button 
           onClick={logout} 
           className={styles.logoutButton}
         >
-          Logout
+          {t("logout")}
         </button>
       </div>
     </nav>
