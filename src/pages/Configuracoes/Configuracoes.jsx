@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styles from "./configuracoes.module.css";
+import styles from "./Configuracoes.module.css";
 import { useTranslation } from "react-i18next";
-import "../../Traducao/i18nIngles";
+import { useFont } from "../../Context/FontContext";
 
 export default function Configuracoes() {
   const [idioma, setIdioma] = useState("pt");
   const [mensagem, setMensagem] = useState("");
   const [senhaNova, setSenhaNova] = useState("");
   const [login, setLogin] = useState("");
-  const [nomeCategoria, setNomeCategoria] = useState("");
-  const [corCategoria, setCorCategoria] = useState("");
+  const { fontSize, setFontSize, fontFamily, setFontFamily } = useFont();
   const { t, i18n } = useTranslation();
 
   const token = localStorage.getItem("token");
@@ -25,7 +24,7 @@ export default function Configuracoes() {
       );
       setMensagem(resp.data.mensagem);
     } catch {
-      setMensagem("Erro ao alterar senha");
+      setMensagem(t("errorChangePassword"));
     }
   };
 
@@ -41,20 +40,7 @@ export default function Configuracoes() {
         localStorage.setItem("token", resp.data.token);
       }
     } catch {
-      setMensagem("Erro ao atualizar perfil");
-    }
-  };
-
-  const criarCategoria = async () => {
-    try {
-      const resp = await axios.post(
-        "http://localhost:8080/configuracoes/categorias",
-        { nomeCategoria, corCategoria },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setMensagem(resp.data.mensagem);
-    } catch {
-      setMensagem("Erro ao criar categoria");
+      setMensagem(t("errorUpdateProfile"));
     }
   };
 
@@ -69,7 +55,7 @@ export default function Configuracoes() {
       );
       setMensagem(resp.data.mensagem);
     } catch {
-      setMensagem("Erro ao mudar idioma");
+      setMensagem(t("errorChangeLanguage"));
     }
   };
 
@@ -78,6 +64,7 @@ export default function Configuracoes() {
       <h1 className={styles.title}>{t("settings")}</h1>
       {mensagem && <p className={styles.feedback}>{mensagem}</p>}
 
+      {/* Conta */}
       <section className={styles.section}>
         <h2>🔑 {t("account")}</h2>
         <input
@@ -103,34 +90,60 @@ export default function Configuracoes() {
         </button>
       </section>
 
+      {/* Idioma */}
       <section className={styles.section}>
         <h2>🌐 {t("language")}</h2>
-        <select value={idioma} onChange={(e) => mudarIdioma(e.target.value)}>
+        <select value={idioma} onChange={(e) => mudarIdioma(e.target.value)} className={styles.input}>
           <option value="pt">Português</option>
           <option value="en">English</option>
+          <option value="es">Español</option>
+
         </select>
       </section>
 
-      <section className={styles.section}>
-        <h2>🗂️ {t("categories")}</h2>
-        <input
-          type="text"
-          placeholder={t("categoryName")}
-          value={nomeCategoria}
-          onChange={(e) => setNomeCategoria(e.target.value)}
-          className={styles.input}
-        />
-        <input
-          type="text"
-          placeholder={t("categoryColor")}
-          value={corCategoria}
-          onChange={(e) => setCorCategoria(e.target.value)}
-          className={styles.input}
-        />
-        <button className={styles.button} onClick={criarCategoria}>
-          {t("createCategory")}
-        </button>
-      </section>
+     {/* Fonte */}
+<section className={styles.section}>
+  <h2>🔠 {t("fontPreferences")}</h2>
+
+  <label className={styles.label}>{t("fontSize")}</label>
+  <input
+    type="range"
+    min="12"
+    max="48"
+    value={fontSize}
+    onChange={(e) => setFontSize(parseInt(e.target.value))}
+    className={styles.slider}
+  />
+
+  <label className={styles.label}>{t("fontType")}</label>
+  <select
+    value={fontFamily}
+    onChange={(e) => setFontFamily(e.target.value)}
+    className={styles.input}
+  >
+    <option value="Arial">Arial</option>
+    <option value="Verdana">Verdana</option>
+    <option value="Times New Roman">Times New Roman</option>
+    <option value="Courier New">Courier New</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Tahoma">Tahoma</option>
+    <option value="Trebuchet MS">Trebuchet MS</option>
+    <option value="Impact">Impact</option>
+    <option value="Comic Sans MS">Comic Sans MS</option>
+    <option value="Lucida Console">Lucida Console</option>
+    <option value="Palatino Linotype">Palatino Linotype</option>
+    <option value="Segoe UI">Segoe UI</option>
+    <option value="Helvetica">Helvetica</option>
+  </select>
+
+  <p
+    className={styles.preview}
+    style={{ fontSize: `${fontSize}px`, fontFamily }}
+  >
+    {t("previewText", { size: fontSize, font: fontFamily })}
+  </p>
+</section>
+
     </div>
   );
 }

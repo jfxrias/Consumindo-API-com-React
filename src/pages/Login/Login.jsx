@@ -43,9 +43,6 @@ export default function Login() {
         />
         <button type="submit">Entrar</button>
       </form>
-      <a href="#" className={styles.forgot}>
-        Esqueceu a senha?
-      </a>
     </div>
   );
 }

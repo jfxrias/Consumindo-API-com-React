@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NotesContext } from "../../Context/NotesContext.jsx";
 import { useTranslation } from "react-i18next";
+import { useFont } from "../../Context/FontContext";
 import styles from "./MinhasNotas.module.css";
 
 export default function MinhasNotas() {
@@ -9,6 +10,7 @@ export default function MinhasNotas() {
   const [cor, setCor] = useState("#ffff88");
   const [editing, setEditing] = useState(null);
   const { t } = useTranslation();
+  const { fontSize, fontFamily } = useFont();
 
   const handleAdd = () => {
     if (!texto.trim()) {
@@ -67,7 +69,8 @@ export default function MinhasNotas() {
             className={styles.postit}
             style={{ backgroundColor: note.cor }}
           >
-            <p>{note.texto}</p>
+            {/* Aplica tamanho e tipo de fonte apenas no texto da nota */}
+            <p style={{ fontSize: `${fontSize}px`, fontFamily }}>{note.texto}</p>
             <div className={styles.actions}>
               <button onClick={() => deleteNote(note.idBloco)}>{t("delete")}</button>
               <button onClick={() => setEditing(note)}>{t("edit")}</button>
