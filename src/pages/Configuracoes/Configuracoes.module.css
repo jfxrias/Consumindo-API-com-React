@@ -1,18 +1,23 @@
 .container {
-  max-width: 800px;
+  max-width: 900px;      
   margin: 0 auto;
   padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .title {
   text-align: center;
   margin-bottom: 2rem;
   color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 .section {
   margin-bottom: 2rem;
-  padding: 1rem;
+  padding: 1.5rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #f9f9f9;
@@ -20,6 +25,8 @@
 
 .section h2 {
   margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #444;
 }
 
 .option {
@@ -41,8 +48,27 @@
   background-color: #0078d7;
   color: white;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .button:hover {
   background-color: #005fa3;
+}
+
+
+.slider {
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #0078d7; 
+}
+
+.preview {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #fff8dc; 
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
 }

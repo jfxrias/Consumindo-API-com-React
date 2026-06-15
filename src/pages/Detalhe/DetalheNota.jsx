@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { NotesContext } from "../../Context/NotesContext.jsx";
 import { ThemeContext } from "../../Context/ThemeContext.jsx";
 import { getNoteTextColor } from "../../utils/noteColors";
+import { useFont } from "../../Context/FontContext";
 import jsPDF from "jspdf";
 import styles from "./DetalheNota.module.css";
 
@@ -10,6 +11,7 @@ export default function DetalheNota() {
   const { id } = useParams();
   const { notes } = useContext(NotesContext);
   const { darkMode } = useContext(ThemeContext);
+  const { fontSize, fontFamily } = useFont();
   const navigate = useNavigate();
 
   const theme = {
@@ -48,12 +50,11 @@ export default function DetalheNota() {
     doc.save(`nota-${note.idBloco}.pdf`);
   }
 
-function sendByEmail(note) {
-  const subject = encodeURIComponent("Compartilhando nota");
-  const body = encodeURIComponent(`Nota: ${note.texto}\n\n${note.texto}`);
-  window.open(`https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`, "_blank");
-}
-
+  function sendByEmail(note) {
+    const subject = encodeURIComponent("Compartilhando nota");
+    const body = encodeURIComponent(`Nota: ${note.texto}\n\n${note.texto}`);
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`, "_blank");
+  }
 
   return (
     <div className={styles.container} style={{ backgroundColor: theme.bg, color: theme.text }}>
@@ -65,7 +66,8 @@ function sendByEmail(note) {
           {categoria && <span className={styles.noteCategory}>{categoria}</span>}
           <h1 className={styles.noteTitle}>{texto || "(sem título)"}</h1>
           {createdAt && <p className={styles.noteDate}>Adicionado em: {createdAt}</p>}
-          <p className={styles.noteContent}>
+      
+          <p className={styles.noteContent} style={{ fontSize: `${fontSize}px`, fontFamily }}>
             {texto ? texto : <em style={{ opacity: 0.5 }}>Sem conteúdo.</em>}
           </p>
         </div>

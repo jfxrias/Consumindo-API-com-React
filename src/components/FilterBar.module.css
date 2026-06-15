@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}
+
+.searchWrapper {
+  position: relative;
+  flex-grow: 1;
+  min-width: 180px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--icon-color);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.select {
+  padding: 8px 12px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  outline: none;
+  min-width: 140px;
+  transition: border-color 0.2s;
+}
+
+.clearBtn {
+  padding: 8px 14px;
+  border-radius: 24px;
+  border: none;
+  background-color: var(--btn-bg);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--btn-text);
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.clearBtn:hover {
+  background-color: var(--btn-hover);
+}

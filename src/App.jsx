@@ -8,8 +8,9 @@ import Configuracoes from "./pages/Configuracoes/Configuracoes.jsx";
 import "./App.css";
 import NavBar from "./components/NavBar.jsx";
 import MinhasNotas from "./pages/MinhasNotas/MinhasNotas.jsx";
-import "./Traducao/i18nIngles.jsx";
+import "./Traducao/i18nInglesPortuguesEspanhol.jsx";
 import DetalheNota from "./pages/Detalhe/DetalheNota.jsx"
+import { FontProvider } from "./Context/FontContext";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -27,18 +28,20 @@ export default function App() {
     <AuthProvider>
       <ThemeProvider>
         <NotesProvider>
-          <BrowserRouter>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/minhasnotas" element={<MinhasNotas />} />
-                <Route path="/configuracoes" element={<Configuracoes />} />
-                 <Route path="/note/:id" element={<DetalheNota />} />  
-              </Routes>
-            </Layout>
-          </BrowserRouter>
+          <FontProvider>
+            <BrowserRouter>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Login />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/minhasnotas" element={<MinhasNotas />} />
+                  <Route path="/configuracoes" element={<Configuracoes />} />
+                  <Route path="/note/:id" element={<DetalheNota />} />  
+                </Routes>
+              </Layout>
+            </BrowserRouter>
+          </FontProvider>
         </NotesProvider>
       </ThemeProvider>
     </AuthProvider>

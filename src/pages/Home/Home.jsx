@@ -5,22 +5,15 @@ import FilterBar from "../../components/FilterBar.jsx";
 import { NotesContext } from "../../Context/NotesContext.jsx";
 import { ThemeContext } from "../../Context/ThemeContext.jsx";
 import { useTranslation } from "react-i18next";
+import { useFont } from "../../Context/FontContext";
 import styles from "./Home.module.css";
 
-function filterNotes(notes, searchTerm, selectedCategory) {
-  return notes.filter((note) => {
-    const matchesSearch =
+function filterNotes(notes, searchTerm) {
+  return notes.filter(
+    (note) =>
       !searchTerm ||
-      note.texto?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      !selectedCategory || note.categoria === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-}
-
-function getCategories(notes) {
-  const cats = notes.map((n) => n.categoria).filter(Boolean);
-  return [...new Set(cats)].sort();
+      note.texto?.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 }
 
 function getTheme(darkMode) {
@@ -37,52 +30,53 @@ export default function Home() {
   const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
+const { fontSize, fontFamily } = useFont();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    document.title = `Bloco de Notas (${notes.length} ${notes.length === 1 ? t("notesCountSingular") : t("notesCountPlural")})`;
+    document.title = `Bloco de Notas (${notes.length} ${
+      notes.length === 1 ? t("notesCountSingular") : t("notesCountPlural")
+    })`;
     return () => {
       document.title = "Bloco de Notas";
     };
   }, [notes.length, t]);
 
-  const categories = useMemo(() => getCategories(notes), [notes]);
   const filteredNotes = useMemo(
-    () => filterNotes(notes, searchTerm, selectedCategory),
-    [notes, searchTerm, selectedCategory]
+    () => filterNotes(notes, searchTerm),
+    [notes, searchTerm],
   );
 
   const theme = useMemo(() => getTheme(darkMode), [darkMode]);
 
   return (
-    <div className={styles.container} style={{ backgroundColor: theme.bg, color: theme.text }}>
+    <div
+      className={styles.container}
+      style={{ backgroundColor: theme.bg, color: theme.text }}
+    >
       <div className={styles.inner}>
         <div className={styles.header}>
           <h1 className={styles.title}>{t("homeTitle")}</h1>
           <span className={styles.count} style={{ color: theme.subtext }}>
-            {filteredNotes.length} {filteredNotes.length === 1 ? t("notesCountSingular") : t("notesCountPlural")}
+            {filteredNotes.length}{" "}
+            {filteredNotes.length === 1
+              ? t("notesCountSingular")
+              : t("notesCountPlural")}
           </span>
         </div>
 
         <FilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          categories={categories}
           darkMode={darkMode}
         />
 
         {filteredNotes.length === 0 ? (
           <EmptyState
-            hasFilters={!!(searchTerm || selectedCategory)}
+            hasFilters={!!searchTerm}
             theme={theme}
-            onClear={() => {
-              setSearchTerm("");
-              setSelectedCategory("");
-            }}
+            onClear={() => setSearchTerm("")}
           />
         ) : (
           <div className={styles.grid}>
@@ -93,9 +87,10 @@ export default function Home() {
                   id: note.idBloco,
                   title: note.texto,
                   content: note.texto,
-                  category: note.categoria,
                   color: note.cor,
                 }}
+                fontSize={fontSize}
+                fontFamily={fontFamily}
                 onClick={() => navigate(`/note/${note.idBloco}`)}
               />
             ))}
