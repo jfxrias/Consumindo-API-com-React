@@ -3,7 +3,7 @@ package br.com.serratec.anotacoes.dto;
 public class ConfiguracoesRequestDTO {
     private String senhaNova;
    
-    private String login; // antes era email
+    private String login;
     private String nomeCategoria;
     private String corCategoria;
     private String idioma;

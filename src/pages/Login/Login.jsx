@@ -12,10 +12,8 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // login deve retornar o objeto com token, idUsuario e login
       const response = await login(email, password);
 
-      // salva no localStorage para usar depois nos endpoints de configurações
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.idUsuario);
       localStorage.setItem("login", response.login);

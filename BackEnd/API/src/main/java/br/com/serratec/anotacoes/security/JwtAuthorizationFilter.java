@@ -31,14 +31,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        // Verifica se o header existe e começa com "Bearer "
         if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7); // Remove "Bearer "
+            String token = header.substring(7);
 
             try {
                 String login = jwtUtil.extrairLogin(token);
 
-                // Se tem login e não está autenticado ainda
                 if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(login);
 

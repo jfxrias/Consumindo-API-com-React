@@ -20,7 +20,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // ── POST /usuarios/cadastro 
+    //POST /usuarios/cadastro 
     @PostMapping("/cadastro")
     @Operation(summary = "Cadastra um novo usuário")
     public ResponseEntity<UsuarioResponseDTO> cadastrar(
@@ -37,7 +37,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(salvo);
     }
 
-    // ── POST /usuarios/login
+    //POST /usuarios/login
     @PostMapping("/login")
     @Operation(summary = "Autentica o usuário e retorna o token JWT")
     public ResponseEntity<LoginResponseDTO> login(

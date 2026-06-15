@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ── Erros de Validação (@Valid)
+    //Erros de Validação
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroResposta> handleValidation(
             MethodArgumentNotValidException ex) {
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(erro);
     }
 
-    // ── Login inválido
+    //Login inválido
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErroResposta> handleBadCredentials(
             BadCredentialsException ex) {
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(401).body(erro);
     }
 
-    // ── Erros genéricos
+    //Erros genéricos
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErroResposta> handleRuntime(RuntimeException ex) {
         int status = ex.getMessage().contains("não encontrado") ? 404 : 400;
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(erro);
     }
 
-    // ── Classe interna de resposta de erro
+    //Classe interna de resposta de erro
     public static class ErroResposta {
         private int status;
         private String mensagem;

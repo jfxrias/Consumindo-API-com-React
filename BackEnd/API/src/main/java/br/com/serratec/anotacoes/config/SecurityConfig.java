@@ -53,23 +53,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // Desabilita CSRF
             .csrf(csrf -> csrf.disable())
 
-            // Configura CORS para aceitar requisições do React
+            // Configura o CORS para aceitar requisições do React
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-            // API Stateless — sem sessão no servidor
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // Regras de autorização
+            //autorização
             .authorizeHttpRequests(auth -> auth
-                // Rotas públicas — não precisam de token
+                // Rotas públicas
                 .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuarios/cadastro").permitAll()
                 .requestMatchers("/configuracoes/**").authenticated()
-                // Swagger — público em dev
                 .requestMatchers(
                 	    "/swagger-ui.html",
                 	    "/swagger-ui/**",
@@ -78,11 +75,9 @@ public class SecurityConfig {
                 	    "/swagger-resources/**",
                 	    "/webjars/**"
                 	).permitAll()
-                // Todo o resto precisa de autenticação
                 .anyRequest().authenticated()
             )
 
-            // Adiciona o filtro JWT antes do filtro padrão de autenticação
             .addFilterBefore(jwtAuthorizationFilter,
                 UsernamePasswordAuthenticationFilter.class);
 
@@ -93,10 +88,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Permite requisições do React (ajuste a porta se necessário)
+
         config.setAllowedOrigins(List.of(
-            "http://localhost:5173",   // React dev server
-            "http://localhost:5173"    // Vite dev server
+            "http://localhost:5173",   // React
+            "http://localhost:5173"    // Vite
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

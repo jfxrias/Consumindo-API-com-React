@@ -31,12 +31,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extrai o login (subject) do token
     public String extrairLogin(String token) {
         return getClaims(token).getSubject();
     }
 
-    // Valida se o token é válido e pertence ao login informado
     public boolean validarToken(String token, String login) {
         try {
             String loginDoToken = extrairLogin(token);
