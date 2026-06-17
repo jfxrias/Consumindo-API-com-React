@@ -103,6 +103,34 @@ src
 
 ---
 
+
+:
+
+🗄️ Banco de Dados — PostgreSQL
+O projeto utiliza PostgreSQL como banco de dados relacional.
+Abaixo está a definição das tabelas principais:
+
+sql
+CREATE TABLE usuario (
+    id_usuario    SERIAL PRIMARY KEY,
+    login         VARCHAR(100) NOT NULL UNIQUE,
+    senha_usuario VARCHAR(255) NOT NULL,
+    role          VARCHAR(20) CHECK (role IN ('USER', 'ADMIN')),
+    idioma        VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE bloco (
+    id_bloco   SERIAL PRIMARY KEY,
+    texto      VARCHAR(100) NOT NULL,
+    id_usuario INTEGER NOT NULL,
+    cor        VARCHAR(100) NOT NULL,
+    CONSTRAINT fk_bloco_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id_usuario)
+        ON DELETE CASCADE
+);
+
+CREATE INDEX idx_bloco_usuario ON bloco(id_usuario);
+
 # 🖥️ Telas da Aplicação
 
 ## 🔑 Login
